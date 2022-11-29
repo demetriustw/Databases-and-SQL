@@ -1,58 +1,58 @@
-<!-- CREATES A TABLE CALLED PEOPLE -->
+-- CREATES A TABLE CALLED PEOPLE 
 CREATE TABLE people(first_name VARCHAR(50), last_name VARCHAR(50), age INT);
 
-<!-- ADDS FIRST PERSON TO PEOPLE -->
+-- ADDS FIRST PERSON TO PEOPLE 
 INSERT INTO people(first_name, last_name, age)
 VALUES('Tina' ,'Belcher', 13);
 
-<!-- ADDS SECOND PERSON TO PEOPLE -->
+-- ADDS SECOND PERSON TO PEOPLE 
 INSERT INTO people(first_name, last_name, age)
 VALUES('Bob', 'Belcher', 42);
 
-<!-- ADDS THREE PEOPLE TO PEOPLE -->
+-- ADDS THREE PEOPLE TO PEOPLE 
 INSERT INTO people(first_name, last_name, age)
 VALUES('Linda', 'Belcher', 45),
 	  ('Phillip','Frond', 38),
       ('Calvin','Fischoeder', 70);
 
-<!-- DELETES PEOPLE TABLE & ALL INSIDE -->
+-- DELETES PEOPLE TABLE & ALL INSIDE 
 DROP TABLE people;
 
-<!-- DON'T ALLOW EMPTY INPUTS -->
+-- DON'T ALLOW EMPTY INPUTS 
 CREATE TABLE cats2 (name VARCHAR(50) NOT NULL, age INT NOT NULL);
 
-<!-- CREATES TABLE CALLED SHOPS & ADDS SHOE EMPORIUM TO IT -->
+-- CREATES TABLE CALLED SHOPS & ADDS SHOE EMPORIUM TO IT 
 CREATE TABLE shops (name VARCHAR(100));
 INSERT INTO shops(name) VALUES('shoe emporium');
 
-<!-- BRAKES OUT OF QUOTES, ALLOWING THEM IN STRING -->
+-- BRAKES OUT OF QUOTES, ALLOWING THEM IN STRING 
 INSERT INTO shops(name) VALUES('mario\'s pizza');
 
-<!-- DON'T ALLOW NULL/EMPTY INPUTS & INPUTS DEFAULTS IF BLANK -->
+-- DON'T ALLOW NULL/EMPTY INPUTS & INPUTS DEFAULTS IF BLANK 
 CREATE TABLE cats4 ( name VARCHAR(100) NOT NULL DEFAULT 'mystery', age INT NOT NULL DEFAULT 99);
 
-<!-- DON'T ALLOW NULL/EMPTY INPUTS -->
+-- DON'T ALLOW NULL/EMPTY INPUTS 
 CREATE TABLE unique_cats (cat_id INT NOT NULL PRIMARY KEY, name VARCHAR(100), age INT):
 
 
 
-<!-- ADDS BINGO TO UNIQUE_CATS -->
+-- ADDS BINGO TO UNIQUE_CATS 
 INSERT INTO unique_cats(cat_id, name, age)
 VALUES(1, 'bingo', 2);
 
-<!-- GIVES ERROR FOR SAME ID NUMBER -->
+-- GIVES ERROR FOR SAME ID NUMBER 
 INSERT INTO unique_cats(cat_id, name, age)
 VALUES(1, 'bongo', 3);
 
-<!-- MANUALY CHANGE ID NUMBER -->
+-- MANUALY CHANGE ID NUMBER 
 INSERT INTO unique_cats(cat_id, name, age) VALUES(2, 'bongo', 3);
 
 INSERT INTO unique_cats(cat_id, name, age) VALUES(3, 'bongo', 3);
 
 INSERT INTO unique_cats(cat_id, name, age) VALUES(999, 'bongo', 3);
 
-<!-- MORE READABLE DECLARATION OF PRIMARY KEY -->
-<!-- NOT NULL IS REDUNDANT. PRIMARY KEYS CANNOT BE NULL -->
+-- MORE READABLE DECLARATION OF PRIMARY KEY 
+-- NOT NULL IS REDUNDANT. PRIMARY KEYS CANNOT BE NULL 
 CREATE TABLE unique_cats (
     cat_id INT NOT NULL,
     name VARCHAR(100),
@@ -60,14 +60,14 @@ CREATE TABLE unique_cats (
     PRIMARY KEY(cat_id)
 );
 
-<!-- NOT NULL NOT DECLARED, PRIMARY DECLARED -->
+-- NOT NULL NOT DECLARED, PRIMARY DECLARED 
 CREATE TABLE unique_cats (cat_id INT, name VARCHAR(100), age INT, PRIMARY KEY(cat_id));
 
 INSERT INTO unique_cats(cat_id, name, age) VALUES(1, 'Oingo', 3);
 
 INSERT INTO unique_cats(name, age) VALUES('Oingo', 3);
 
-<!-- PRIMARY DECLARED & AUTO INCREMENT MAKING IT PASS CAT_ID AUTOMATICLY -->
+-- PRIMARY DECLARED & AUTO INCREMENT MAKING IT PASS CAT_ID AUTOMATICLY 
 CREATE TABLE unique_cats3 (
     cat_id INT AUTO_INCREMENT,
     name VARCHAR(100),
@@ -75,7 +75,7 @@ CREATE TABLE unique_cats3 (
     PRIMARY KEY (cat_id)
 );
 
-<!-- PUT PRIMARY DECLARED & AUTO INCREMENT ON SAME LINE -->
+-- PUT PRIMARY DECLARED & AUTO INCREMENT ON SAME LINE 
 CREATE TABLE unique_cats4 (
     cat_id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(100),
@@ -83,7 +83,7 @@ CREATE TABLE unique_cats4 (
 );
 
 
-<!-- EXERCISE (BASICLY ADDING EVERYTHING SO FAR INTO ONE TABLE) -->
+-- EXERCISE (BASICLY ADDING EVERYTHING SO FAR INTO ONE TABLE) 
 CREATE TABLE employees (
     id INT AUTO_INCREMENT PRIMARY KEY,
     last_name VARCHAR(100) NOT NULL,
@@ -96,7 +96,7 @@ CREATE TABLE employees (
 INSERT INTO employees (first_name, last_name, age)
 VALUES ('thomas', 'chickenman', 87);
 
-<!-- CRUD (START WITH CLEAN SLATE & DELETE EVERYTHING SO FAR) -->
+-- CRUD (START WITH CLEAN SLATE & DELETE EVERYTHING SO FAR) 
 DROP TABLE cats;
 
 CREATE TABLE cats
@@ -118,38 +118,38 @@ VALUES('Ringo', 'Tabby', 4),
 ('Jackson', 'Sphynx', 7);
 
 
-<!-- USE THE WHERE FUNCTION WITH SELECT -->
+-- USE THE WHERE FUNCTION WITH SELECT 
 SELECT * FROM cats WHERE age = 4;
 SELECT name, age FROM cats WHERE age=4;
 SELECT name FROM cats WHERE age=4;
 
-<!-- NON-CASE SENSITIVE -->
+-- NON-CASE SENSITIVE 
 SELECT * FROM cats WHERE name='Egg';
 
-<!-- WORKS JUST THE SAME AS ONE ABOVE -->
+-- WORKS JUST THE SAME AS ONE ABOVE 
 SELECT * FROM cats WHERE name='eGG';
 
-<!-- RAPID FIRE EXERCISE (WRIGHT THE CODE USED) -->
+-- RAPID FIRE EXERCISE (WRIGHT THE CODE USED) 
 SELECT cat_id FROM cats;
 SELECT name, breed FROM cats;
 SELECT name, age FROM cats WHERE breed='Tabby';
 SELECT cat_id, age FROM cats WHERE cat_id=age;
 
-<!-- ALIASES (ALT NAME FOR TABLE COLUMN) -->
+-- ALIASES (ALT NAME FOR TABLE COLUMN) 
 SELECT cat_id AS id, name FROM cats;
 
-<!-- UPDATE COLUMNS -->
-<!-- UPDATES ALL IN TABLE COLUMN TO NEW VALUE/S -->
+-- UPDATE COLUMNS 
+-- UPDATES ALL IN TABLE COLUMN TO NEW VALUE/S 
 UPDATE employees SET last_name='roosterbeard';
 UPDATE employees SET current_status='laid-off', last-name='who cares';
 
-<!-- BASIC TEMPLATE/PATERN FOR UPDATE -->
+-- BASIC TEMPLATE/PATERN FOR UPDATE 
 UPDATE table SET col=val, another_col=val WHERE col=val;
 
-<!-- SELECT BEFORE YOU UPDATE OR DELETE!!!!!! -->
+-- SELECT BEFORE YOU UPDATE OR DELETE!!!!!! 
 SELECT * FROM cats WHERE name='Misty';
 
-<!-- UPDATE EXERCISE -->
+-- UPDATE EXERCISE 
 SELECT * FROM cats WHERE name='Jackson';
 UPDATE cats SET name='Jack' WHERE name='Jackson';
 
@@ -159,20 +159,20 @@ UPDATE cats SET breed='British Shorthair' WHERE name='Ringo';
 SELECT * FROM cats WHERE breed='Main Coon';
 UPDATE cats SET age=12 WHERE breed='Main Coon';
 
-<!-- DELETE FUNCTION -->
-<!-- DELETE FUNCTION NEEDS WHERE SO YOU DELETE ONLY WHAT WANTED -->
-<!-- IF WHERE IS GONE THEN EVERY THING GETS DELETED -->
+-- DELETE FUNCTION 
+-- DELETE FUNCTION NEEDS WHERE SO YOU DELETE ONLY WHAT WANTED 
+-- IF WHERE IS GONE THEN EVERY THING GETS DELETED 
 DELETE FROM cats WHERE name='Egg';
 
-<!-- FYI USE DATABASE TABLE WANTED IS IN FIRST -->
+-- FYI USE DATABASE TABLE WANTED IS IN FIRST 
 USE pet_shop;
 
-<!-- EXAMPLE FOR DELETE WITHOUT WHERE CLAUSE -->
+-- EXAMPLE FOR DELETE WITHOUT WHERE CLAUSE 
 SELECT * FROM employees;
 DELETE FROM employees;
 DESC employees;
 
-<!-- DELETE EXERCISE -->
+-- DELETE EXERCISE 
 SELECT * FROM cats;
 DELETE FROM cats WHERE age=4;
 
@@ -184,7 +184,7 @@ DELETE FROM cats;
 
 SELECT * FROM cats;
 
-<!-- CRUD CHALLANGE -->
+-- CRUD CHALLANGE 
 CREATE DATABASE shirts_db;
 USE shirts_db;
 
@@ -242,11 +242,11 @@ SELECT * FROM shirts;
 
 DROP DATABASE shirts_db;
 
-<!-- CONCAT -->
+-- CONCAT 
 SELECT CONCAT(author_fname, '!!!') FROM books;
 SELECT CONCAT(author_fname, ' ', author_lname) AS Author_name FROM books;
 
-<!-- CONCAT_WS -->
+-- CONCAT_WS 
 
 SELECT CONCAT_WS('!','hi','bye','lol');
 SELECT CONCAT_WS('-', title, author_fname, author_lname) AS Author_name_and_Title FROM books;
@@ -254,47 +254,92 @@ SELECT
     CONCAT_WS('-', title, author_fname, author_lname)
     FROM books;
 
-<!-- SUBSTRING -->
+-- SUBSTRING 
 SELECT SUBSTRING('Hello World', 1, 4);
-<!-- RESOLTES ARE "HELL" -->
+-- RESOLTES ARE "HELL" 
 
 SELECT SUBSTRING('Hello World', 2, 5);
-<!-- RESOLTES ARE "ELLO" -->
+-- RESOLTES ARE "ELLO" 
 
 SELECT SUBSTRING('Hello World', 7);
-<!-- RESOLTES ARE "WORLD" -->
+-- RESOLTES ARE "WORLD" 
 
 SELECT SUBSTRING('Hello World', -3);
-<!-- RESOLTES ARE "RLD" (GOES BACKWORDS) -->
+-- RESOLTES ARE "RLD" (GOES BACKWORDS) 
 
-<!-- SUBSTR() === SUBSTRING() -->
-<!-- FIRST LETTER OF LAST NAME -->
+-- SUBSTR() === SUBSTRING() 
+-- FIRST LETTER OF LAST NAME 
 SELECT SUBSTR(author_lname, 1, 1) AS initial, author_lname FROM books;
 SELECT SUBSTR(title, 1, 10) FROM books;
 
-<!-- REPLACE -->
+-- REPLACE 
 SELECT REPLACE('Hello World', 'Hell', '%$#@')
 
 SELECT REPLACE('cheese bread coffee milk', ' ', ' and ');
 
 SELECT REPLACE(title, ' ', '-') FROM books;
 
-<!-- REVERSE -->
+-- REVERSE 
 SELECT REVERSE(NULL);
 
 SELECT REVERSE('chicken nuggets');
 
-<!-- MAKE NAMES WORK LIKE RACECAR (SAME FORWARDS AND BACK) -->
+-- MAKE NAMES WORK LIKE RACECAR (SAME FORWARDS AND BACK) 
 
 SELECT
   CONCAT(author_fname, REVERSE(author_fname))
 FROM
   books;
 
-<!-- CHAR_LENGTH -->
+-- CHAR_LENGTH 
 SELECT CHAR_LENGTH("Hey!");
 
-<!-- BIT LENGHT SOMETIMES THE SAME AS CHAR_LENGTH-->
+-- BIT LENGHT SOMETIMES THE SAME AS CHAR_LENGTH
 SELECT LENGTH("Hey!");
 
 SELECT CHAR_LENGTH(title) AS len, title FROM books;
+
+SELECT
+REPLACE
+    (
+    CONCAT('I', ' ', 'like', ' ', 'cats'),
+    ' ',
+    '-'
+    );
+
+-- DISTINCT (REMOVES DUPLECTS)
+SELECT DISTINCT author_lname FROM books;
+
+SELECT DISTINCT released_year FROM books;
+
+SELECT DISTINCT CONCAT(author_fname, ' ', author_lname) AS 'Author Fullname' FROM books;
+
+SELECT DISTINCT author_fname, author_lname FROM books;
+
+SELECT DISTINCT author_fname, author_lname, released_year FROM books;
+
+-- ORDER BY
+SELECT book_id, author_fname, author_lname FROM books ORDER BY author_lname;
+
+SELECT book_id, author_fname, author_lname FROM books ORDER BY author_fname;
+-- ASC IS DEFAULT
+-- DESC WITH ORDER BY IS DESCENDING 
+SELECT book_id, author_fname, author_lname FROM books ORDER BY author_fname DESC;
+
+-- CAN ORDER BY AMOUNT
+SELECT title, pages FROM books ORDER BY pages;
+
+SELECT title, pages FROM books ORDER BY released_year;
+
+-- ORDER BY SHORT-HAND
+-- CAN ORDER BY USING THE POSITION NUMBER OF SELECTED RESULT
+SELECT book_id, author_fname,author_lname, pages FROM books ORDER BY 4;
+
+-- ORDERS BY TWO VALUES 
+-- DEFINED ORDER VALUE & ASC/DESCGOES ONE AT A TIME
+SELECT author_lname, released_year, title FROM books ORDER BY author_lname, released_year;
+
+SELECT author_lname, released_year, title FROM books ORDER BY author_lname, released_year DESC;
+
+-- AILIASE NAME CAN BE ORDERED BY
+SELECT CONCAT(author_fname,' ', author_lname) AS author FROM books ORDER BY author;
