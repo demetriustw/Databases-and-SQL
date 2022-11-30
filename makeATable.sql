@@ -514,3 +514,211 @@ SELECT SUM(author_lname) FROM books;
 
 -- AVG (AVERAGE)
 SELECT released_year, AVG(stock_quantity), COUNT(*) FROM books GROUP BY released_year;
+
+-- AGG FUNCITONS EXERCISE
+SELECT COUNT(*) FROM books;
+
+SELECT released_year, COUNT(*) FROM books GROUP BY released_year;
+
+SELECT SUM(stock_quantity) FROM books;
+
+SELECT CONCAT(author_fname, ' ', author_lname) AS author, AVG(released_year) AS year FROM books GROUP BY author;
+
+SELECT CONCAT(author_fname, ' ', author_lname) AS author, pages FROM books 
+WHERE pages = (SELECT MAX(pages) FROM books);
+-- COULD HAVE DONE-v, BUT DID -^
+SELECT CONCAT(author_fname, ' ', author_lname) AS author, pages FROM books 
+ORDER BY pages DESC LIMIT 1;
+
+SELECT
+    released_year AS year,
+    COUNT(*) AS '# books',
+    AVG(pages) AS 'avg pages'
+FROM books 
+GROUP BY year --  v--- NOT NEEDED
+ORDER BY year LIMIT 1,20;
+
+-- CHAR VS. VARCHAR
+CREATE TABLE friends (name VARCHAR(10));
+
+INSERT INTO friends (name) VALUES ('tom'), ('juan pablo'), ('james');
+
+
+
+CREATE TABLE states (abbr CHAR(2));
+
+INSERT INTO states (abbr) VALUES ('CA'), ('NY');
+
++----------+----------+----------+-----------+---------+
+| Value    | Char(4)  | Storage  | Varchar(4)| Storage |
++----------+----------+----------+-----------+---------+
+| ' '      | '    '   | 4 bytes  | ' '       | 1 byte  |
++----------+----------+----------+-----------+---------+
+| 'ab'     | 'ab  '   | 4 bytes  | 'ab'      | 3 byte  |
++----------+----------+----------+-----------+---------+
+| 'abcd'   | 'abcd'   | 4 bytes  | 'abcd'    | 5 byte  |
++----------+----------+----------+-----------+---------+
+
+-- USE CHAR IF FIXED LENGTH OTHERWISE USE VARCHAR
+-- LESS THAN LIMIT WORKS
+INSERT INTO states (abbr) VALUES ('x');
+-- LIMIT EXCEED WON'T BE ALLOWED
+INSERT INTO states (abbr) VALUES ('Ohio');
+
+-- INT, TINYINT, BIGINT
+CREATE TABLE parent (children TINYINT);
+
+INSERT INTO parent(children) VALUES (2), (7), (0);
+--                 THIS WON'T STORE---v
+INSERT INTO parent(children) VALUES (200);
+-- NEGITIVES WORK RIGHT NOW
+INSERT INTO parent(children) VALUES (-3);
+
+-- MAKES IT SO NO NEGITIVE SIGN CAN BE INSERTED
+CREATE TABLE parent (children TINYINT UNSIGNED);
+-- NEGITIVES NO LONGER WORKS NOW
+INSERT INTO parent(children) VALUES (-3);
+
+-- DECIMAL
+INSERT INTO parent(children) VALUES (1.5);
+
+-- ROUNDS THE DECIMAL
+INSERT INTO parent(children) VALUES (3), (1.5);
+INSERT INTO parent(children) VALUES (90.0008);
+
+-- IF USE DECIMAL(5,2)
+-- NUM OF DIGITS--^ ^--DIGITS AFTER DECIMAL
+-- 999.99                 ^
+-- --- -- "-"= DIGITS     |
+--      ^---DECIMAL-------|
+
+CREATE TABLE products (price DECIMAL(5,2));
+
+-- IF 5 DIGITS BUT ONLY ONE DECIMAL IT DOSN'T WORK
+INSERT INTO products (price) VALUES (5032.6);
+
+-- IF 5 DIGITS BUT MOST IN DECIMAL
+-- IT WILL ROUND UP TO FIT
+INSERT INTO products (price) VALUES (5.026);
+
+-- FLOAT LARGER NUBMERS USEING LESS SPACE BUT NOT EXACT
+
++-----------+-----------------+-------------------+
+| Data Type | Memeory Needed  | Precision Issues  |
++-----------+-----------------+-------------------+
+| FLOAT     | 4 bytes         | ~7 digits         |
++-----------+-----------------+-------------------+
+| DOUBLE    | 8 bytes         | ~15 digits        |
++-----------+-----------------+-------------------+
+
+CREATE TABLE numbers (x FLOAT, y DOUBLE);
+
+INSERT INTO numbers (x,y) VALUES (1.12345678, 1.12345678987654321);
+
+-- DATES AND TIMES
++--------------+-----------+-----------------------+
+| DATE         | TIME      | DATETIME              |
++--------------+-----------+-----------------------+
+| 'YYYY-MM-DD' | 'HH:MM:SS'| 'YYYY-MM-DD HH:MM:SS' |
++--------------+-----------+-----------------------+
+
+CREATE TABLE people (
+    name VARCHAR(100),
+    birthdate DATE,
+    birthtime TIME,
+    birthdt DATETIME
+);
+
+INSERT INTO people (name, birthdate, birthtime, birthdt)
+VALUES ('Elton', '2000-12-25', '11:00:00', '2000-12-25 11:00:00');
+
+INSERT INTO people (name, birthdate, birthtime, birthdt)
+VALUES ('Lulu', '1985-04-11', '9:45:10', '1985-04-11 9:45:10');
+
+INSERT INTO people (name, birthdate, birthtime, birthdt)
+VALUES ('Juan', '2020-08-15', '23:59:00', '2020-08-15 23:59:00');
+
+-- CURDATE, CURTIME, & NOW
+-- SHORT HANDS OF CURRENTTIME/DATE & CURRENTTIMESTAMP
++--------------+-----------+-----------------------+
+| CURDATE      | CURTIME   | NOW                   |
++--------------+-----------+-----------------------+
+| 'YYYY-MM-DD' | 'HH:MM:SS'| 'YYYY-MM-DD HH:MM:SS' |
++--------------+-----------+-----------------------+
+
+INSERT INTO people (name, birthdate, birthtime, birthdt)
+VALUES ('Hazle', CURDATE(), CURTIME(), NOW());
+
+-- DATE FUNCTIONS
+-- DAY OR DAYOFMONTH
+SELECT name, birthdate, DAY(birthdate) FROM people;
+
+SELECT name, birthdate, DAY(birthdate), DAYOFWEEK(birthdate) FROM people;
+
+SELECT birthdate, DAY(birthdate), DAYOFWEEK(birthdate), MONTH(birthdate), YEAR(birthdate) FROM people;
+
+SELECT birthdate, MONTHNAME(birthdate) FROM people;
+
+SELECT name, birthdt, year(birthdt) FROM people;
+
+SELECT name, birthdt, year(birthdt), MONTHNAME(birthdt) FROM people;
+
+SELECT name, birthtime, HOUR(birthtime) FROM people;
+
+SELECT name, birthtime, MINUTE(birthtime) FROM people;
+
+SELECT name, birthtime, SECOND(birthtime) FROM people;
+
+SELECT birthdt, HOUR(birthdt) FROM people;
+
+SELECT birthdt, DATE(birthdt) FROM people;
+
+SELECT birthdt, DATE(birthdt), TIME(birthdt) FROM people;
+
+-- FORMATING DATES
+SELECT CONCAT_WS(' ', MONTHNAME(birthdate), DAY(birthdate), YEAR(birthdate)) AS date FROM people;
+-- OR A SHORTER WAY
+SELECT birthdate, DATE_FORMAT(birthdate, '%b') AS 'abbr month' FROM people;
+
+SELECT birthdate, DATE_FORMAT(birthdate, '%a %b %D') AS 'abbr date' FROM people;
+
+SELECT birthdt, DATE_FORMAT(birthdt, 'BORN ON: %r') AS 'abbr time' FROM people;
+
+-- DATE MATH
+SELECT birthdate, DATEDIFF(CURDATE(), birthdate) FROM people;
+
+SELECT birthdate, DATEDIFF(CURDATE(), birthdt) FROM people;
+
+SELECT DATE_ADD(CURDATE(), INTERVAL 1 YEAR);
+
+SELECT DATE_ADD(CURDATE(), INTERVAL 12 YEAR);
+
+SELECT DATE_ADD(CURDATE(), INTERVAL 1 MONTH);
+
+SELECT DATE_SUB(CURDATE(), INTERVAL 1 MONTH);
+
+SELECT birthdate, DATE_ADD(birthdate, INTERVAL 18 year) FROM people;
+
+SELECT TIMEDIFF(CURTIME(), '07:00:00');
+
+SELECT NOW() - INTERVAL 18 YEAR;
+
+SELECT name, birthdate, YEAR(birthdate + INTERVAL 21 YEAR) AS when_adult FROM people;
+
+-- TIMESTAMPS
+SELECT TIMESTAMP('2022-11-30 14:50:23');
+
+CREATE TABLE captions (
+    text VARCHAR(150),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE captions2 (
+    text VARCHAR(150),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+INSERT INTO captions2 (text) VALUES ('i love live!');
+
+UPDATE captions2 SET text='i love life!!!!!';
