@@ -380,3 +380,137 @@ SELECT author_lname, released_year, title FROM books ORDER BY author_lname, rele
 
 -- AILIASE NAME CAN BE ORDERED BY
 SELECT CONCAT(author_fname,' ', author_lname) AS author FROM books ORDER BY author;
+
+-- LIMIT ONLY GETS AMOUNT WANTED
+SELECT book_id, title, released_year FROM books LIMIT 5;
+
+SELECT book_id, title, released_year FROM books ORDER BY released_year LIMIT 5;
+
+SELECT book_id, title, released_year FROM books ORDER BY released_year LIMIT 3,2;
+
+-- GETS WHAT IT CAN WITH A LIMIT FROM-TO NUMBER SET
+SELECT book_id, title, released_year FROM books ORDER BY released_year LIMIT 17, 32418953;
+
+-- LIKE
+SELECT title, author_fname, author_lname FROM books WHERE author_fname='David';
+
+SELECT title, author_fname, author_lname FROM books WHERE author_fname LIKE '%da%';
+
+SELECT * FROM books WHERE title LIKE '%:%';
+
+SELECT * FROM books WHERE author_fname LIKE '____';
+
+SELECT * FROM books WHERE author_fname LIKE '%';
+
+-- GET EXACT WITH
+SELECT * FROM books WHERE author_fname LIKE '_a_';
+-- GET ALL WITH
+SELECT * FROM books WHERE author_fname LIKE '%a%';
+
+SELECT * FROM books WHERE author_fname LIKE '%n';
+
+-- ESCAPE WILDCARDS
+SELECT * FROM books WHERE title LIKE '%\%%';
+
+SELECT * FROM books WHERE title LIKE '%\_%';
+
+-- REFINEING SELECTIONS EXERCISE
+SELECT title FROM books WHERE title LIKE '%stories%';
+
+SELECT title, pages FROM books ORDER BY pages DESC LIMIT 1;
+
+SELECT CONCAT(title, ' - ', released_year) AS summary FROM books ORDER BY released_year DESC LIMIT 3;
+
+SELECT title, author_lname FROM books WHERE author_lname LIKE '% %';
+
+SELECT title, released_year, stock_quantity FROM books ORDER BY stock_quantity LIMIT 3;
+
+SELECT title, author_lname FROM books ORDER BY author_lname, title;
+
+SELECT 
+    CONCAT(
+        UCASE('my favorite author is'), ' ', 
+        UCASE(CONCAT(author_fname, ' ', 
+        author_lname)), '!'
+        ) AS yell 
+        FROM books 
+        ORDER BY author_lname;
+
+-- COUNT
+SELECT COUNT(*) FROM books;
+
+SELECT COUNT(author_fname) FROM books;
+
+SELECT COUNT(DISTINCT author_fname) FROM books;
+
+SELECT COUNT(DISTINCT released_year) FROM books;
+
+SELECT title FROM books WHERE title LIKE '%the%';
+
+SELECT COUNT(*) FROM books WHERE title LIKE '%the%';
+
+-- GROUP BY
+SELECT author_lname,COUNT(*) FROM books GROUP BY author_lname;
+
+SELECT released_year,COUNT(*) FROM books GROUP BY released_year;
+
+-- MIN AND MAX
+SELECT MIN(released_year) FROM books;
+
+SELECT MAX(pages) FROM books;
+
+SELECT MIN(author_lname), MAX(author_lname) FROM books;
+
+SELECT MAX(pages), title FROM books;
+
+SELECT title, pages FROM books ORDER BY pages DESC LIMIT 1;
+
+SELECT title, pages FROM books 
+WHERE pages = (SELECT MAX(pages) FROM books);
+
+SELECT MIN(released_year) FROM books;
+
+SELECT title, released_year FROM books
+WHERE released_year = (SELECT MIN(released_year) FROM books);
+
+SELECT author_fname, author_lname FROM books ORDER BY author_lname;
+
+SELECT author_lname, COUNT(*) FROM books GROUP BY author_lname, author_fname;
+
+SELECT author_fname, author_lname, COUNT(*) FROM books GROUP BY author_lname, author_fname;
+
+SELECT CONCAT(author_fname, ' ', author_lname) AS author, COUNT(*) FROM books GROUP BY author;
+
+-- MIN/MAX WITH GROUP BY
+SELECT author_lname, MIN(released_year) FROM books GROUP BY author_lname;
+
+SELECT author_lname, MAX(released_year), MIN(released_year) FROM books GROUP BY author_lname;
+
+SELECT
+    author_lname,
+    COUNT(*) AS books_written,
+    MAX(released_year) AS lastest_release,
+    MIN(released_year) AS earliest_release,
+    MAX(pages) AS longest_page_count
+FROM books GROUP BY author_lname;
+
+SELECT
+    author_lname,
+    author_fname,
+    COUNT(*) AS books_written,
+    MAX(released_year) AS lastest_release,
+    MIN(released_year) AS earliest_release,
+    MAX(pages) AS most_pages
+FROM books GROUP BY author_lname, author_fname;
+
+-- SUM
+SELECT SUM(pages) FROM books;
+
+SELECT author_lname, SUM(pages) FROM books GROUP BY author_lname;
+
+SELECT author_lname, COUNT(*), SUM(released_year) FROM books GROUP BY author_lname;
+
+SELECT SUM(author_lname) FROM books;
+
+-- AVG (AVERAGE)
+SELECT released_year, AVG(stock_quantity), COUNT(*) FROM books GROUP BY released_year;
