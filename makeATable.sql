@@ -307,6 +307,43 @@ REPLACE
     '-'
     );
 
+
+SELECT REPLACE(title,' ','->') AS title FROM books;
+
+SELECT author_lname AS 'forwards', REVERSE(author_lname) AS 'backwords' FROM books;
+
+SELECT CONCAT(UPPER(author_fname), ' ', UPPER(author_lname)) AS 'full name in caps' FROM books;
+
+SELECT CONCAT(title, ' was released in ', released_year) AS 'blurb' FROM books;
+
+SELECT title, CHAR_LENGTH(title) AS 'character count' FROM books;
+
+SELECT CONCAT(SUBSTR(title, 1, 10), '...') AS short_title, CONCAT(author_lname, ',', author_fname) AS 'author', CONCAT(stock_quantity, ' in stock') AS 'quantitiy' FROM books;
+
+SELECT * FROM books WHERE title IN()
+
+SELECT 
+        SUBSTR(title,1,15) AS 'first',
+
+        SUBSTR(title,4,18) AS 'second',
+
+        SUBSTR(title,10,5) AS 'third',
+        SUBSTR(title,7,1) AS 'forth',
+        
+        SUBSTR(title,13,6) AS 'fifth'
+        
+
+    FROM books
+    WHERE
+        book_id IN(9,7,15,14,13);
+
+SELECT SUBSTR(title,1,15) AS 'first' FROM books WHERE SUBSTR(title,1,1) = 'A' && CHAR_LENGTH(title) = 41;
+SELECT SUBSTR(title,4,18) AS 'second' FROM books WHERE SUBSTR(title,1,1) = 'T' && CHAR_LENGTH(title) = 41;
+SELECT SUBSTR(title,10,5) AS 'third' FROM books WHERE SUBSTR(title,1,1) = 'O' && CHAR_LENGTH(title) = 17;
+SELECT SUBSTR(title,7,1) AS 'forth' FROM books WHERE SUBSTR(title,1,1) = 'C' && CHAR_LENGTH(title) = 11;
+SELECT SUBSTR(title,13,6) AS 'fifth' FROM books WHERE SUBSTR(title,1,1) = 'W' && CHAR_LENGTH(title) = 51;
+SELECT CONCAT_WS(' ', first, second);
+
 -- DISTINCT (REMOVES DUPLECTS)
 SELECT DISTINCT author_lname FROM books;
 
