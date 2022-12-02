@@ -337,12 +337,16 @@ SELECT
     WHERE
         book_id IN(9,7,15,14,13);
 
-SELECT SUBSTR(title,1,15) AS 'first' FROM books WHERE SUBSTR(title,1,1) = 'A' && CHAR_LENGTH(title) = 41;
-SELECT SUBSTR(title,4,18) AS 'second' FROM books WHERE SUBSTR(title,1,1) = 'T' && CHAR_LENGTH(title) = 41;
-SELECT SUBSTR(title,10,5) AS 'third' FROM books WHERE SUBSTR(title,1,1) = 'O' && CHAR_LENGTH(title) = 17;
-SELECT SUBSTR(title,7,1) AS 'forth' FROM books WHERE SUBSTR(title,1,1) = 'C' && CHAR_LENGTH(title) = 11;
-SELECT SUBSTR(title,13,6) AS 'fifth' FROM books WHERE SUBSTR(title,1,1) = 'W' && CHAR_LENGTH(title) = 51;
-SELECT CONCAT_WS(' ', first, second);
+SELECT SUBSTR(title,1,15) AS 'first',
+SUBSTR(title,4,18) AS 'second',
+SUBSTR(title,10,5) AS 'third',
+SUBSTR(title,7,1) AS 'forth',
+SUBSTR(title,13,6) AS 'fifth' FROM books
+WHERE SUBSTR(title,1,1) = 'A' && CHAR_LENGTH(title) = 41
+OR SUBSTR(title,1,1) = 'T' && CHAR_LENGTH(title) = 41
+OR SUBSTR(title,1,1) = 'O' && CHAR_LENGTH(title) = 17
+OR SUBSTR(title,1,1) = 'C' && CHAR_LENGTH(title) = 11
+OR SUBSTR(title,1,1) = 'W' && CHAR_LENGTH(title) = 51;
 
 -- DISTINCT (REMOVES DUPLECTS)
 SELECT DISTINCT author_lname FROM books;
@@ -639,7 +643,7 @@ INSERT INTO people (name, birthdate, birthtime, birthdt)
 VALUES ('Juan', '2020-08-15', '23:59:00', '2020-08-15 23:59:00');
 
 -- CURDATE, CURTIME, & NOW
--- SHORT HANDS OF CURRENTTIME/DATE & CURRENTTIMESTAMP
+-- SHORT HANDS OF CURRENTTIME/DATE & CURRENT_TIMESTAMP
 +--------------+-----------+-----------------------+
 | CURDATE      | CURTIME   | NOW                   |
 +--------------+-----------+-----------------------+
@@ -722,3 +726,355 @@ CREATE TABLE captions2 (
 INSERT INTO captions2 (text) VALUES ('i love live!');
 
 UPDATE captions2 SET text='i love life!!!!!';
+
+-- DATA TYPE EXERCISE
+-- WHAT'S A GOOD USE CASE FOR CHAR?
+-- WHEN THE TEXT IS FIXED DATA (THE MAX LENGTH OR 1 LETTER OFF)
+
+CREATE TABLE inventory (
+    item_name VARCHAR(50),
+    price DECIMAL(8,2)),
+    quantitiy SMALLINT
+)
+
+-- WHAT'S THE DIFF BETWEEN DATETIME AND TIMESTAMP?
+-- TIMESTAMP TAKES HALF AS MUCH SPACE BUT DATETIME CAN GO FROM YEAR 1000-9999
+
+SELECT TIME(NOW()) AS time,
+DATE(NOW()) AS date,
+DATE_FORMAT(NOW(), '%w') AS num_wday,
+DATE_FORMAT(NOW(), '%W') AS wday_name,
+DATE_FORMAT(NOW(), '%c/%d/%Y') AS 'Short date & time',
+DATE_FORMAT(NOW(), '%M %D at %H:%i') AS 'Long date & time';
+
+SELECT CURTIME() AS time,
+CURDATE() AS date,
+DAYOFWEEK(CURDATE()) AS num_wday,
+DAYNAME(CURDATE()) AS num_wday,
+DATE_FORMAT(CURDATE(), '%m/%d/%Y') AS 'Short date & time',
+DATE_FORMAT(NOW(), '%M %D at %H:%i') AS 'Long date & time';
+
+-- TWEETS TABLE
+CREATE TABLE tweets(
+    content VARCHAR(180),
+    username VARCHAR(20),
+    created_at TIMESTAMP DEFAULT NOW()
+);
+
+-- NOT EQUAL
+SELECT * FROM books WHERE released_year != 2017;
+
+SELECT title, author_lname FROM books WHERE author_lname = 'Gaiman';
+SELECT title, author_lname FROM books WHERE author_lname != 'Gaiman';
+
+-- NOT LIKE
+SELECT title FROM books WHERE title NOT LIKE '% %';
+
+SELECT title, author_fname, author_lname FROM books WHERE author_fname NOT LIKE '%da%';
+
+SELECT title FROM books WHERE title NOT LIKE '%a%';
+
+-- GREATER THAN
+SELECT * FROM books WHERE released_year > 2005;
+
+SELECT * FROM books WHERE pages > 500;
+
+SELECT 99 > 1;
+-- TRUE = 1 FALSE = 0
+
+SELECT title, pages, released_year FROM books;
+
+SELECT title, pages, released_year FROM books WHERE pages > 500;
+
+-- LESS THAN
+SELECT title, released_year FROM books WHERE released_year < 2000 ORDER BY released_year;
+
+SELECT title, pages FROM books WHERE pages < 200;
+
+-- LESS/GRATER THAN OR EQUAL TO
+SELECT title, released_year FROM books WHERE released_year >= 2010;
+
+SELECT title, released_year FROM books WHERE released_year <= 1985;
+
+-- AND
+SELECT title, author_lname, released_year FROM books
+WHERE released_year > 2010
+AND author_lname = 'Eggers'
+AND title LIKE '%novel%';
+
+LEFT AND RIGHT
+
+SELECT title, pages FROM books
+WHERE author_lname = 'Eggers' AND
+released_year > 2010;
+
+SELECT 3 > 1;
+-- 1
+SELECT 1 > 0 AND 8 = 7;
+-- 0
+
+SELECT CHAR_LENGTH(title) FROM books;
+
+SELECT title, pages FROM books 
+WHERE CHAR_LENGTH(title) > 30
+AND pages > 500;
+
+-- OR
+SELECT title, author_lname, released_year FROM books
+WHERE author_lname = 'Eggers' OR
+released_year > 2010;
+
+SELECT  1 < 5;
+-- 1
+SELECT  1 < 5 OR 4 = 5;
+-- 1
+SELECT  1 < 5 AND 4 = 5;
+-- 1
+SELECT  1 < 0 OR 4 = 5;
+-- 0
+
+SELECT title, pages FROM books
+WHERE pages < 200
+OR title LIKE '%stories%';
+
+-- BETWEEN
+SELECT * FROM books
+WHERE released_year <= 2015 AND
+released_year >= 2004;
+
+SELECT title, released_year FROM books
+WHERE released_year BETWEEN 2004 AND 2015;
+
+SELECT title, pages FROM books
+WHERE pages BETWEEN 200 AND 300;
+
+SELECT title, pages FROM books
+WHERE pages NOT BETWEEN 200 AND 300;
+
+-- COMPARING DATES
+SELECT * FROM people WHERE birthdate < '2005-01-01';
+
+SELECT * FROM people WHERE YEAR(birthdate) < 2005;
+
+SELECT * FROM people WHERE birthtime > '12:00:00';
+
+SELECT * FROM people WHERE HOUR(birthtime) > 12;
+
+-- CAST
+SELECT CAST('9:00:00' AS TIME);
+
+SELECT * FROM people WHERE birthtime BETWEEN '12:00:00' AND '16:00:00';
+
+SELECT * FROM people WHERE birthtime 
+BETWEEN CAST('12:00:00' AS TIME) 
+AND CAST('16:00:00' AS TIME);
+
+SELECT * FROM people WHERE HOUR(birthtime)
+BETWEEN 12 AND 16;
+
+-- IN
+SELECT title, author_lname FROM books
+WHERE author_lname = 'Carver'
+OR author_lname = 'Lahiri'
+OR author_lname = 'Smith';
+
+SELECT title, author_lname FROM books
+WHERE author_lname IN ('Carver', 'Lahiri', 'Smith');
+
+SELECT title, author_lname FROM books
+WHERE author_lname NOT IN ('Carver', 'Lahiri', 'Smith');
+
+SELECT title, released_year FROM books
+WHERE released_year NOT IN ('2000', '2002', '2004','2006', '2008', '2010', '2012', '2014', '2016');
+
+SELECT title, released_year FROM books
+WHERE released_year >= 2000
+AND released_year NOT IN ('2000', '2002', '2004','2006', '2008', '2010', '2012', '2014', '2016');
+
+-- MODULO = %
+SELECT 10 % 4;
+
+SELECT 17 % 6;
+
+SELECT title, released_year FROM books
+WHERE released_year >= 2000
+AND released_year % 2 = 1 ORDER BY released_year;
+
+-- DATE CASE (USING TOGETHER)
+-- CASE IS SQL IF STATMENTS
+SELECT title, released_year,
+    CASE
+        WHEN ... 2000 THEN ...
+        ELSE ...
+    END
+FROM books;
+
+SELECT title, released_year,
+    CASE
+        WHEN released_year >= 2000 THEN 'Modern Lit'
+        ELSE '20th Century Lit'
+    END AS GENRE
+FROM books;
+
+
+SELECT title, stock_quantity,
+    CASE
+        WHEN stock_quantity BETWEEN 0 AND 40 THEN '*'
+        WHEN stock_quantity  BETWEEN 41 AND 70  THEN '**'
+        WHEN stock_quantity  BETWEEN 71 AND 100  THEN '***'
+        WHEN stock_quantity  BETWEEN 101 AND 140  THEN '****'
+        ELSE '*****'
+    END AS STOCK
+FROM books;
+
+
+SELECT title, stock_quantity,
+    CASE
+        WHEN stock_quantity <= 40 THEN '*'
+        WHEN stock_quantity <= 70  THEN '**'
+        WHEN stock_quantity <= 100  THEN '***'
+        WHEN stock_quantity <= 140  THEN '****'
+        ELSE '*****'
+    END AS STOCK
+FROM books;
+
+-- IS NULL
+SELECT * FROM books WHERE author_lname IS NULL;
+
+SELECT * FROM books WHERE author_lname IS NOT NULL;
+
+-- EXERCISE
+SELECT 10 != 10;
+-- 0
+SELECT 15 > 14 AND 99 - 5 <= 94;
+-- 1
+SELECT 1 IN (5,3) OR 9 BETWEEN 8 AND 10;
+-- 1
+
+SELECT * FROM books WHERE released_year < 1980;
+
+SELECT * FROM books 
+WHERE author_lname = 'Eggers' 
+OR author_lname = 'Chabon';
+
+SELECT * FROM books 
+WHERE author_lname = 'Lahiri' 
+AND released_year > 2000;
+
+SELECT * FROM books 
+WHERE pages BETWEEN 100 AND 200;
+
+SELECT * FROM books 
+WHERE SUBSTR(author_lname,1,1) = 'C' 
+OR SUBSTR(author_lname,1,1) = 'S';
+
+SELECT title, author_lname FROM books 
+WHERE author_lname,1,1 LIKE 'C%' 
+OR  author_lname,1,1 LIKE 'S%' 
+-- COULD BE: SUBSTR(author_lname,1,1) IN ('C', 'S');
+
+SELECT title, author_lname,
+    CASE
+        WHEN title LIKE '%stories%' THEN 'Short Stories'
+        WHEN title = 'Just Kids' OR title LIKE 'A Heartbreaking Work%' THEN 'Memoir'
+        ELSE 'Novel'
+    END AS TYPE
+FROM books;
+
+SELECT author_fname, author_lname, 
+    CASE
+        WHEN COUNT(*) = 1 THEN '1 book'
+        ELSE CONCAT(COUNT(*), ' books')
+    END AS COUNT
+FROM books 
+WHERE author_lname IS NOT NULL
+GROUP BY author_lname, author_fname;
+
+-- UNIQUE CONSTRAINTS
+CREATE TABLE contacts (
+    name VARCHAR(100) NOT NULL,
+    phone VARCHAR(15) NOT NULL UNIQUE
+);
+
+INSERT INTO contacts (name, phone)
+VALUES ('billybob', '8781213455');
+
+INSERT INTO contacts (name, phone)
+VALUES ('billybob', '9781213455');
+
+-- CHECK CONSTRAINTS
+CREATE TABLE users (
+    username VARCHAR(20) NOT NULL,
+    age INT CHECK (age > 0)
+);
+
+CREATE TABLE palindromes (
+    word VARCHAR(100) CHECK(REVERSE(word) = word)
+);
+
+-- NAMED CONSTRAINTS
+CREATE TABLE users2 (
+    username VARCHAR(20) NOT NULL,
+    age INT,
+    CONSTRAINT age_not_negative CHECK (age >= 0)
+);
+
+CREATE TABLE palindromes2 (
+    word VARCHAR(100),
+    CONSTRAINT word_is_palindrome CHECK(REVERSE(word) = word)
+);
+
+-- MULTIPLE COLUMN CONSTRAINTES
+CREATE TABLE companies (
+    name VARCHAR(255) NOT NULL,
+    address VARCHAR(255) NOT NULL,
+    CONSTRAINT name_address UNIQUE (name, address)
+);
+
+CREATE TABLE houses (
+    purchase_price INT NOT NULL,
+    sale_price INT NOT NULL,
+    CONSTRAINT sprice_gt_pprice CHECK(sale_price >= purchase_price)
+);
+
+-- ALTER TABLE
+ALTER TABLE companies
+ADD COLUMN phone VARCHAR(15);
+
+ALTER TABLE companies
+ADD COLUMN employee_count INT NOT NULL DEFAULT 1;
+
+-- DROP COLUMN
+ALTER TABLE companies DROP COLUMN phone;
+
+ALTER TABLE companies DROP COLUMN employee_count;
+
+-- RENAME TABLE
+RENAME TABLE companies TO suppliers;
+
+ALTER TABLE suppliers RENAME TO companies;
+
+-- RENAMING COLUMNS
+ALTER TABLE companies
+RENAME COLUMN name TO company_name;
+
+-- MODIFY COLUMNS
+ALTER TABLE companies
+MODIFY company_name VARCHAR(100) DEFAULT 'unknown';
+
+ALTER TABLE companies
+CHANGE company_name VARCHAR(100) DEFAULT 'unknown';
+
+-- ALTER TABLE CONSTRAINT
+ALTER TABLE houses ADD CONSTRAINT positive_pprice CHECK (purchase_price >= 0);
+
+ALTER TABLE houses DROP CONSTRAINT positive_pprice;
+
+-- RELATIONSHIPS AND JOINS
+CREATE TABLE customers (
+    customers_fname VARCHAR(50) NOT NULL,
+    customers_fname VARCHAR(50) NOT NULL,
+    email VARCHAR(50) NOT NULL,
+    order_date DATE,
+    order_price DECIMAL
+)
