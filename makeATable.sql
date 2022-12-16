@@ -901,7 +901,7 @@ WHERE released_year >= 2000
 AND released_year % 2 = 1 ORDER BY released_year;
 
 -- DATE CASE (USING TOGETHER)
--- CASE IS SQL IF STATMENTS
+-- CASE IS SQL IF ALIKE STATMENT
 SELECT title, released_year,
     CASE
         WHEN ... 2000 THEN ...
@@ -1464,6 +1464,9 @@ GROUP BY released_year, genre, first_name WITH ROLLUP;
 SELECT @@GLOBAL.sql_mode;
 SELECT @@SESSION.sql_mode;
 
+SET SESSION sql_mode = 'STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
+SET SESSION sql_mode = @@GLOBAL.sql_mode;
+
 SELECT title, rating FROM series
 JOIN reviews ON reviews.series_id = series.id
 GROUP BY title;
@@ -1645,7 +1648,12 @@ CREATE TABLE users (
     id INT PRIMARY KEY AUTO_INCREMENT,
     username VARCHAR(50) UNIQUE NOT NULL,
     created_at TIMESTAMP DEFAULT NOW()
-)
+);
+
+INSERT INTO users (username) VALUES
+('BlueTheCat'),
+('CharlieBrown'),
+('UnrealVoice')
 
 CREATE TABLE likes (
     id INT PRIMARY KEY AUTO_INCREMENT,
