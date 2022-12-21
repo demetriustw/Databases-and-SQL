@@ -1,3 +1,7 @@
+CREATE DATABASE join_us;
+
+USE join_us;
+
 CREATE TABLE users(
 	email VARCHAR(255) PRIMARY KEY,
     created_at TIMESTAMP DEFAULT NOW()
@@ -47,3 +51,6 @@ email,
 FROM users
 GROUP BY provider
 ORDER BY total_users DESC;
+
+ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'Ago0dPas5W0rd';
+flush privileges;

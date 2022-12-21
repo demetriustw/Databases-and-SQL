@@ -7,7 +7,7 @@
 // RANDOMLY GENERATE AND INSERT 500+ USERS
 
 const { error } = require("console");
-var mysql = require("mysql2");
+var mysql = require("mysql");
 var faker = require("faker");
 
 var connection = mysql.createConnection({

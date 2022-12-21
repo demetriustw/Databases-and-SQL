@@ -10,6 +10,6 @@
   "license": "ISC",
   "dependencies": {
     "faker": "^5.5.3",
-    "mysql2": "^2.3.3"
+    "mysql": "^2.18.1"
   }
 }
